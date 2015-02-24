@@ -1,4 +1,4 @@
-package com.ls.annotations.annotation.acyivity;
+package com.yuzeeeer.annotations.acyivity;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

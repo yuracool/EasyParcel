@@ -1,4 +1,4 @@
-package com.ls.annotations.annotation.acyivity;
+package com.yuzeeeer.annotations.acyivity;
 
 import android.app.Activity;
 import android.content.Intent;
