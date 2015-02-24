@@ -1,4 +1,4 @@
-package com.yuzeeeer.annotations;
+package com.yuracool.annotations;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.widget.TextView;
-import com.yuzeeeer.annotations.acyivity.ActivityAnnotation;
-import com.yuzeeeer.annotations.acyivity.Extras;
-import com.yuzeeeer.annotations.acyivity.ViewId;
-import com.yuzeeeer.annotations.data.ExtendedEntity;
+import com.yuracool.annotations.acyivity.ActivityAnnotation;
+import com.yuracool.annotations.acyivity.Extras;
+import com.yuracool.annotations.acyivity.ViewId;
+import com.yuracool.annotations.data.ExtendedEntity;
 
 /**
  * Created by Kuhta on 04.02.2015.

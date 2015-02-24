@@ -1,6 +1,6 @@
-package com.yuzeeeer.annotations.data;
+package com.yuracool.annotations.data;
 
-import com.yuzeeeer.easyparcel.EasyParcel;
+import com.yuracool.easyparcel.EasyParcel;
 
 /**
  * Created by Kuhta on 05.02.2015.

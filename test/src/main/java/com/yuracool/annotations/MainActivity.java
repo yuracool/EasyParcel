@@ -1,14 +1,14 @@
-package com.yuzeeeer.annotations;
+package com.yuracool.annotations;
 
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import com.yuzeeeer.annotations.acyivity.ActivityAnnotation;
-import com.yuzeeeer.annotations.acyivity.OnClick;
-import com.yuzeeeer.annotations.acyivity.ViewId;
-import com.yuzeeeer.annotations.data.ExtendedEntity;
+import com.yuracool.annotations.acyivity.ActivityAnnotation;
+import com.yuracool.annotations.acyivity.OnClick;
+import com.yuracool.annotations.acyivity.ViewId;
+import com.yuracool.annotations.data.ExtendedEntity;
 
 /**
  * Created by Kuhta on 03.02.2015.

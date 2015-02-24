@@ -1,4 +1,4 @@
-package com.yuzeeeer.easyparcel;
+package com.yuracool.easyparcel;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

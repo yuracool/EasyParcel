@@ -1,4 +1,4 @@
-package com.yuzeeeer.easyparcel;
+package com.yuracool.easyparcel;
 
 import android.os.Parcel;
 import android.os.Parcelable;

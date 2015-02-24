@@ -1,4 +1,4 @@
-package com.yuzeeeer.annotations.acyivity;
+package com.yuracool.annotations.acyivity;
 
 import android.app.Activity;
 import android.content.Intent;
