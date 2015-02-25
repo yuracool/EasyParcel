@@ -40,8 +40,8 @@ public class ExtendedEntity extends Entity {
 
 		arrays = new TestArrays(txtMember, true);
 		arrays.booleans = new boolean[] {true, true, true, false};
-		arrays.bytes = new Byte[]{-5, 10, 127, -100};
-		arrays.shorts = new short[]{1000, 1678, -3584, 0};
+		arrays.bytes = new Byte[]{-5, 10, 127, -100, 56, 10, -55, 100};
+		arrays.shorts = new short[]{1000, 1678, -3584, 1, 2, -3, 4};
 		arrays.chars = new char[]{'Ю', 'р', 'а', '↓', '♥'};
 		arrays.integers = new int[]{9867345, -897634, 734, 0};
 		arrays.longs = new Long[]{837645983726939847L, -94386586483845834L};

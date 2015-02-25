@@ -3,10 +3,7 @@ package com.yuracool.easyparcel;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -75,13 +72,13 @@ public abstract class EasyParcel implements Parcelable {
 			dest.writeLongArray((long[]) obj);
 		}else if(obj instanceof short[]){
 			short[] array = (short[]) obj;
-			Short[] temp = new Short[array.length];
+			int[] ret = new int[array.length];
 
-			for (int i = 0; i < array.length; i++) {
-				temp[i] = array[i];
+			for(int i=0; i<array.length; i++){
+				ret[i] = array[i];
 			}
 
-			dest.writeList(Arrays.asList(temp));
+			dest.writeIntArray(ret);
 		}else if(obj instanceof char[]){
 			dest.writeCharArray((char[]) obj);
 		}else if(obj instanceof float[]){
@@ -90,10 +87,78 @@ public abstract class EasyParcel implements Parcelable {
 			dest.writeDoubleArray((double[]) obj);
 		}else if(obj instanceof List){
 			dest.writeList((List) obj);
-		}else if(obj instanceof Integer[] || obj instanceof Byte[] || obj instanceof Short[] || obj instanceof Long[] ||
-				obj instanceof Boolean[] || obj instanceof Float[] || obj instanceof Double[] || obj instanceof Character[]){
-			List list = Arrays.asList((Object[])obj);
-			dest.writeList(list);
+		}else if(obj instanceof Byte[]){
+			Byte[] array = (Byte[]) obj;
+			byte[] ret = new byte[array.length];
+
+			for (int i=0; i<array.length; i++){
+				ret[i] = array[i];
+			}
+
+			dest.writeByteArray(ret);
+		}else if(obj instanceof Integer[]){
+			Integer[] array = (Integer[]) obj;
+			int[] ret = new int[array.length];
+
+			for (int i=0; i<array.length; i++){
+				ret[i] = array[i];
+			}
+
+			dest.writeIntArray(ret);
+		}else if(obj instanceof Short[]){
+			Short[] array = (Short[]) obj;
+			int[] ret = new int[array.length];
+
+			for (int i=0; i<array.length; i++){
+				ret[i] = array[i];
+			}
+
+			dest.writeIntArray(ret);
+		}else if(obj instanceof Long[]){
+			Long[] array = (Long[]) obj;
+			long[] ret = new long[array.length];
+
+			for (int i=0; i<array.length; i++){
+				ret[i] = array[i];
+			}
+
+			dest.writeLongArray(ret);
+		}else if(obj instanceof Boolean[]){
+			Boolean[] array = (Boolean[]) obj;
+			boolean[] ret = new boolean[array.length];
+
+			for (int i=0; i<array.length; i++){
+				ret[i] = array[i];
+			}
+
+			dest.writeBooleanArray(ret);
+		}else if(obj instanceof Float[]){
+			Float[] array = (Float[]) obj;
+			float[] ret = new float[array.length];
+
+			for (int i=0; i<array.length; i++){
+				ret[i] = array[i];
+			}
+
+			dest.writeFloatArray(ret);
+		}else if(obj instanceof Double[]){
+			Double[] array = (Double[]) obj;
+			double[] ret = new double[array.length];
+
+			for (int i=0; i<array.length; i++){
+				ret[i] = array[i];
+			}
+
+			dest.writeDoubleArray(ret);
+		}else if(obj instanceof Character[]){
+			Character[] array = (Character[]) obj;
+			char[] ret = new char[array.length];
+
+			for (int i=0; i<array.length; i++){
+				ret[i] = array[i];
+			}
+
+			dest.writeCharArray(ret);
 		}else if(obj instanceof EasyParcel){
 			if(ReflectionUtils.isClassStaticInner(obj.getClass(), instance.getClass())) {
 				writeInstanceToParcel(obj, dest, flags);
@@ -196,21 +261,95 @@ public abstract class EasyParcel implements Parcelable {
 			}else if(type == char[].class){
 				value = in.createCharArray();
 			}else if(type == short[].class){
-				List<Short> list = in.readArrayList(short.class.getClassLoader());
-				short[] tmp = new short[list.size()];
+				int[] tmp = in.createIntArray();
+				short[] array = new short[tmp.length];
 
-				for(int i=0; i<tmp.length; i++){
-					tmp[i] = list.get(i);
+				for(int i=0; i<array.length; i++){
+					array[i] = (short) tmp[i];
 				}
 
-				value = tmp;
-			}else if(type == Integer[].class || type == Byte[].class || type == Short[].class || type == Long[].class ||
-					type == Boolean[].class || type == Float[].class || type == Double[].class || type == Character[].class){
-				List list = in.readArrayList(type.getClassLoader());
-				value = Array.newInstance(type.getComponentType(), list.size());
-				list.toArray((Object[])value);
+				value = array;
+			}else if(type == Byte[].class){
+				byte[] array = in.createByteArray();
+				Byte[] ret = new Byte[array.length];
+
+				for(int i=0; i<array.length; i++){
+					ret[i] = array[i];
+				}
+
+				value = ret;
+			}else if(type == Integer[].class){
+				int[] array = in.createIntArray();
+				Integer[] ret = new Integer[array.length];
+
+				for(int i=0; i<array.length; i++){
+					ret[i] = array[i];
+				}
+
+				value = ret;
+			}else if(type == Short[].class){
+				int[] array = in.createIntArray();
+				Short[] ret = new Short[array.length];
+
+				for(int i=0; i<array.length; i++){
+					ret[i] = (short) array[i];
+				}
+
+				value = ret;
+			}else if(type == Long[].class){
+				long[] array = in.createLongArray();
+				Long[] ret = new Long[array.length];
+
+				for(int i=0; i<array.length; i++){
+					ret[i] = array[i];
+				}
+
+				value = ret;
+			}else if(type == Boolean[].class){
+				boolean[] array = in.createBooleanArray();
+				Boolean[] ret = new Boolean[array.length];
+
+				for(int i=0; i<array.length; i++){
+					ret[i] = array[i];
+				}
+
+				value = ret;
+			}else if(type == Float[].class){
+				float[] array = in.createFloatArray();
+				Float[] ret = new Float[array.length];
+
+				for(int i=0; i<array.length; i++){
+					ret[i] = array[i];
+				}
+
+				value = ret;
+			}else if(type == Double[].class){
+				double[] array = in.createDoubleArray();
+				Double[] ret = new Double[array.length];
+
+				for(int i=0; i<array.length; i++){
+					ret[i] = array[i];
+				}
+
+				value = ret;
+			}else if(type == Character[].class){
+				char[] array = in.createCharArray();
+				Character[] ret = new Character[array.length];
+
+				for(int i=0; i<array.length; i++){
+					ret[i] = array[i];
+				}
+
+				value = ret;
 			}else if(type == List.class){
-				ParameterizedType listType = (ParameterizedType) field.getGenericType();
+				ParameterizedType listType;
+
+				try{
+					listType = (ParameterizedType) field.getGenericType();
+				}catch (ClassCastException e){
+					throw new IllegalArgumentException("Error occurred with field " + field.getName() + " List should be parameterized");
+				}
+
 				Class<?> listClass = (Class<?>) listType.getActualTypeArguments()[0];
 				value = in.readArrayList(listClass.getClassLoader());
 			}else if(EasyParcel.class.isAssignableFrom(type)){
