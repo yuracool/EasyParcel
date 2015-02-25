@@ -88,77 +88,21 @@ public abstract class EasyParcel implements Parcelable {
 		}else if(obj instanceof List){
 			dest.writeList((List) obj);
 		}else if(obj instanceof Byte[]){
-			Byte[] array = (Byte[]) obj;
-			byte[] ret = new byte[array.length];
-
-			for (int i=0; i<array.length; i++){
-				ret[i] = array[i];
-			}
-
-			dest.writeByteArray(ret);
+			writeByteArray((Byte[]) obj, dest);
 		}else if(obj instanceof Integer[]){
-			Integer[] array = (Integer[]) obj;
-			int[] ret = new int[array.length];
-
-			for (int i=0; i<array.length; i++){
-				ret[i] = array[i];
-			}
-
-			dest.writeIntArray(ret);
+			writeIntArray((Integer[]) obj, dest);
 		}else if(obj instanceof Short[]){
-			Short[] array = (Short[]) obj;
-			int[] ret = new int[array.length];
-
-			for (int i=0; i<array.length; i++){
-				ret[i] = array[i];
-			}
-
-			dest.writeIntArray(ret);
+			writeShortArray((Short[]) obj, dest);
 		}else if(obj instanceof Long[]){
-			Long[] array = (Long[]) obj;
-			long[] ret = new long[array.length];
-
-			for (int i=0; i<array.length; i++){
-				ret[i] = array[i];
-			}
-
-			dest.writeLongArray(ret);
+			writeLongArray((Long[]) obj, dest);
 		}else if(obj instanceof Boolean[]){
-			Boolean[] array = (Boolean[]) obj;
-			boolean[] ret = new boolean[array.length];
-
-			for (int i=0; i<array.length; i++){
-				ret[i] = array[i];
-			}
-
-			dest.writeBooleanArray(ret);
+			writeBooleanArray((Boolean[]) obj, dest);
 		}else if(obj instanceof Float[]){
-			Float[] array = (Float[]) obj;
-			float[] ret = new float[array.length];
-
-			for (int i=0; i<array.length; i++){
-				ret[i] = array[i];
-			}
-
-			dest.writeFloatArray(ret);
+			writeFloatArray((Float[]) obj, dest);
 		}else if(obj instanceof Double[]){
-			Double[] array = (Double[]) obj;
-			double[] ret = new double[array.length];
-
-			for (int i=0; i<array.length; i++){
-				ret[i] = array[i];
-			}
-
-			dest.writeDoubleArray(ret);
+			writeDoubleArray((Double[]) obj, dest);
 		}else if(obj instanceof Character[]){
-			Character[] array = (Character[]) obj;
-			char[] ret = new char[array.length];
-
-			for (int i=0; i<array.length; i++){
-				ret[i] = array[i];
-			}
-
-			dest.writeCharArray(ret);
+			writeCharArray((Character[]) obj, dest);
 		}else if(obj instanceof EasyParcel){
 			if(ReflectionUtils.isClassStaticInner(obj.getClass(), instance.getClass())) {
 				writeInstanceToParcel(obj, dest, flags);
@@ -226,21 +170,21 @@ public abstract class EasyParcel implements Parcelable {
 			Class type = field.getType();
 			Object value = null;
 
-			if(type == int.class){
+			if(type == int.class || type == Integer.class){
 				value = in.readInt();
-			}else if(type == long.class){
+			}else if(type == long.class || type == Long.class){
 				value = in.readLong();
-			}else if(type == short.class){
+			}else if(type == short.class || type == Short.class){
 				value = (short) in.readInt();
-			}else if(type == byte.class){
+			}else if(type == byte.class || type == Byte.class){
 				value = in.readByte();
-			}else if(type == char.class){
+			}else if(type == char.class || type == Character.class){
 				value = (char) in.readInt();
-			}else if(type == float.class){
+			}else if(type == float.class || type == Float.class){
 				value = in.readFloat();
-			}else if(type == double.class){
+			}else if(type == double.class || type == Double.class){
 				value = in.readDouble();
-			}else if(type == boolean.class){
+			}else if(type == boolean.class || type == Boolean.class){
 				value = in.readInt() == 1;
 			}else if(type == boolean[].class){
 				value = in.createBooleanArray();
@@ -270,77 +214,21 @@ public abstract class EasyParcel implements Parcelable {
 
 				value = array;
 			}else if(type == Byte[].class){
-				byte[] array = in.createByteArray();
-				Byte[] ret = new Byte[array.length];
-
-				for(int i=0; i<array.length; i++){
-					ret[i] = array[i];
-				}
-
-				value = ret;
+				value = readByteArray(in);
 			}else if(type == Integer[].class){
-				int[] array = in.createIntArray();
-				Integer[] ret = new Integer[array.length];
-
-				for(int i=0; i<array.length; i++){
-					ret[i] = array[i];
-				}
-
-				value = ret;
+				value = readIntArray(in);
 			}else if(type == Short[].class){
-				int[] array = in.createIntArray();
-				Short[] ret = new Short[array.length];
-
-				for(int i=0; i<array.length; i++){
-					ret[i] = (short) array[i];
-				}
-
-				value = ret;
+				value = readShortArray(in);
 			}else if(type == Long[].class){
-				long[] array = in.createLongArray();
-				Long[] ret = new Long[array.length];
-
-				for(int i=0; i<array.length; i++){
-					ret[i] = array[i];
-				}
-
-				value = ret;
+				value = readLongArray(in);
 			}else if(type == Boolean[].class){
-				boolean[] array = in.createBooleanArray();
-				Boolean[] ret = new Boolean[array.length];
-
-				for(int i=0; i<array.length; i++){
-					ret[i] = array[i];
-				}
-
-				value = ret;
+				value = readBooleanArray(in);
 			}else if(type == Float[].class){
-				float[] array = in.createFloatArray();
-				Float[] ret = new Float[array.length];
-
-				for(int i=0; i<array.length; i++){
-					ret[i] = array[i];
-				}
-
-				value = ret;
+				value = readFloatArray(in);
 			}else if(type == Double[].class){
-				double[] array = in.createDoubleArray();
-				Double[] ret = new Double[array.length];
-
-				for(int i=0; i<array.length; i++){
-					ret[i] = array[i];
-				}
-
-				value = ret;
+				value = readDoubleArray(in);
 			}else if(type == Character[].class){
-				char[] array = in.createCharArray();
-				Character[] ret = new Character[array.length];
-
-				for(int i=0; i<array.length; i++){
-					ret[i] = array[i];
-				}
-
-				value = ret;
+				value = readCharArray(in);
 			}else if(type == List.class){
 				ParameterizedType listType;
 
@@ -372,5 +260,173 @@ public abstract class EasyParcel implements Parcelable {
 				catch (IllegalAccessException e) {/*ignore*/}
 			}
 		}
+	}
+
+	private static void writeByteArray(Byte[] array, Parcel dest){
+		byte[] ret = new byte[array.length];
+
+		for (int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		dest.writeByteArray(ret);
+	}
+
+	private static Byte[] readByteArray(Parcel in){
+		byte[] array = in.createByteArray();
+		Byte[] ret = new Byte[array.length];
+
+		for(int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		return ret;
+	}
+
+	private static void writeIntArray(Integer[] array, Parcel dest){
+		int[] ret = new int[array.length];
+
+		for (int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		dest.writeIntArray(ret);
+	}
+
+	private static Integer[] readIntArray(Parcel in){
+		int[] array = in.createIntArray();
+		Integer[] ret = new Integer[array.length];
+
+		for(int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		return ret;
+	}
+
+	private static void writeLongArray(Long[] array, Parcel dest){
+		long[] ret = new long[array.length];
+
+		for (int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		dest.writeLongArray(ret);
+	}
+
+	private static Long[] readLongArray(Parcel in){
+		long[] array = in.createLongArray();
+		Long[] ret = new Long[array.length];
+
+		for(int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		return ret;
+	}
+
+	private static void writeShortArray(Short[] array, Parcel dest){
+		int[] ret = new int[array.length];
+
+		for (int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		dest.writeIntArray(ret);
+	}
+
+	private static Short[] readShortArray(Parcel in){
+		int[] array = in.createIntArray();
+		Short[] ret = new Short[array.length];
+
+		for(int i=0; i<array.length; i++){
+			ret[i] = (short) array[i];
+		}
+
+		return ret;
+	}
+
+	private static void writeCharArray(Character[] array, Parcel dest){
+		char[] ret = new char[array.length];
+
+		for (int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		dest.writeCharArray(ret);
+	}
+
+	private static Character[] readCharArray(Parcel in){
+		char[] array = in.createCharArray();
+		Character[] ret = new Character[array.length];
+
+		for(int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		return ret;
+	}
+
+	private static void writeFloatArray(Float[] array, Parcel dest){
+		float[] ret = new float[array.length];
+
+		for (int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		dest.writeFloatArray(ret);
+	}
+
+	private static Float[] readFloatArray(Parcel in){
+		float[] array = in.createFloatArray();
+		Float[] ret = new Float[array.length];
+
+		for(int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		return ret;
+	}
+
+	private static void writeDoubleArray(Double[] array, Parcel dest){
+		double[] ret = new double[array.length];
+
+		for (int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		dest.writeDoubleArray(ret);
+	}
+
+	private static Double[] readDoubleArray(Parcel in){
+		double[] array = in.createDoubleArray();
+		Double[] ret = new Double[array.length];
+
+		for(int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		return ret;
+	}
+
+	private static void writeBooleanArray(Boolean[] array, Parcel dest){
+		boolean[] ret = new boolean[array.length];
+
+		for (int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		dest.writeBooleanArray(ret);
+	}
+
+	private static Boolean[] readBooleanArray(Parcel in){
+		boolean[] array = in.createBooleanArray();
+		Boolean[] ret = new Boolean[array.length];
+
+		for(int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		return ret;
 	}
 }

@@ -140,9 +140,9 @@ public class ExtendedEntity extends Entity {
 
 	private static class TestStaticClass extends EasyParcel{
 		private String str;
-		private long lg;
+		private Long lg;
 		private byte b;
-		private float f;
+		private Float f;
 		private double d;
 	}
 }
