@@ -71,14 +71,7 @@ public abstract class EasyParcel implements Parcelable {
 		}else if(obj instanceof long[]){
 			dest.writeLongArray((long[]) obj);
 		}else if(obj instanceof short[]){
-			short[] array = (short[]) obj;
-			int[] ret = new int[array.length];
-
-			for(int i=0; i<array.length; i++){
-				ret[i] = array[i];
-			}
-
-			dest.writeIntArray(ret);
+			writeShortArray((short[]) obj, dest);
 		}else if(obj instanceof char[]){
 			dest.writeCharArray((char[]) obj);
 		}else if(obj instanceof float[]){
@@ -205,14 +198,7 @@ public abstract class EasyParcel implements Parcelable {
 			}else if(type == char[].class){
 				value = in.createCharArray();
 			}else if(type == short[].class){
-				int[] tmp = in.createIntArray();
-				short[] array = new short[tmp.length];
-
-				for(int i=0; i<array.length; i++){
-					array[i] = (short) tmp[i];
-				}
-
-				value = array;
+				value = readPrimitiveShortArray(in);
 			}else if(type == Byte[].class){
 				value = readByteArray(in);
 			}else if(type == Integer[].class){
@@ -235,6 +221,7 @@ public abstract class EasyParcel implements Parcelable {
 				try{
 					listType = (ParameterizedType) field.getGenericType();
 				}catch (ClassCastException e){
+					//TODO: implement read and write unparameterized list
 					throw new IllegalArgumentException("Error occurred with field " + field.getName() + " List should be parameterized");
 				}
 
@@ -338,6 +325,27 @@ public abstract class EasyParcel implements Parcelable {
 	private static Short[] readShortArray(Parcel in){
 		int[] array = in.createIntArray();
 		Short[] ret = new Short[array.length];
+
+		for(int i=0; i<array.length; i++){
+			ret[i] = (short) array[i];
+		}
+
+		return ret;
+	}
+
+	private static void writeShortArray(short[] array, Parcel dest){
+		int[] ret = new int[array.length];
+
+		for (int i=0; i<array.length; i++){
+			ret[i] = array[i];
+		}
+
+		dest.writeIntArray(ret);
+	}
+
+	private static short[] readPrimitiveShortArray(Parcel in){
+		int[] array = in.createIntArray();
+		short[] ret = new short[array.length];
 
 		for(int i=0; i<array.length; i++){
 			ret[i] = (short) array[i];

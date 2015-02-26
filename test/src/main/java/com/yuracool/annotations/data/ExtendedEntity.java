@@ -15,6 +15,7 @@ public class ExtendedEntity extends Entity {
 	private TestArrays arrays;
 	private List<String> stringList = new ArrayList<>();
 	private List<Long> longList = new LinkedList<>();
+	private List<TestArrays.SuperInner> list = new LinkedList<>();
 
 	private ExtendedEntity(){}
 
@@ -37,6 +38,16 @@ public class ExtendedEntity extends Entity {
 		longList.add(13457L);
 		longList.add(13458L);
 		longList.add(13459L);
+
+		int i = 36;
+		Integer a = 100;
+		TestArrays.SuperInner cl = new TestArrays.SuperInner();
+		cl.str = "Hello";
+//		list.add(i);
+//		list.add(a);
+//		list.add("List");
+//		list.add(new byte[]{1, -5, 9});
+		list.add(cl);
 
 		arrays = new TestArrays(txtMember, true);
 		arrays.booleans = new boolean[] {true, true, true, false};
