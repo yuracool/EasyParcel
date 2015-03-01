@@ -8,7 +8,7 @@
             android:theme="@style/AppTheme">
 
         <activity
-                android:name="com.yuracool.annotations.MainActivity">
+                android:name="com.yuracool.activities.MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,7 +17,7 @@
 
         </activity>
 
-        <activity android:name="com.yuracool.annotations.ActivityExtras"/>
+        <activity android:name="com.yuracool.activities.ActivityExtras"/>
 
     </application>
 
