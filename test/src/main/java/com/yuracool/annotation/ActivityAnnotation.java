@@ -1,4 +1,4 @@
-package com.yuracool.annotations.acyivity;
+package com.yuracool.annotation;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yuracool.data.ParcelableEntity;
+
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -121,11 +124,19 @@ public class ActivityAnnotation extends Activity {
 					value = intent.getIntExtra(field.getAnnotation(Extras.class).key(), 0);
 				}else if (fieldType == String.class) {
 					value = intent.getStringExtra(field.getAnnotation(Extras.class).key());
-				}else{
-					try {
-						fieldType.asSubclass(Parcelable.class);
-						value = intent.getParcelableExtra(field.getAnnotation(Extras.class).key());
-					}catch (Exception e) {e.printStackTrace();}
+				}else if (fieldType == long.class) {
+                    value = intent.getLongExtra(field.getAnnotation(Extras.class).key(), 0);
+                }else if (fieldType == Parcelable[].class) {
+                    value = intent.getParcelableArrayExtra(field.getAnnotation(Extras.class).key());
+                }else if (fieldType == Serializable[].class) {
+                    value = intent.getSerializableExtra(field.getAnnotation(Extras.class).key());
+                    Log.d("", "");
+                }else if (fieldType == String[].class) {
+                    value = intent.getStringArrayExtra(field.getAnnotation(Extras.class).key());
+                }else if (Serializable.class.isAssignableFrom(fieldType)) {
+                    value = intent.getSerializableExtra(field.getAnnotation(Extras.class).key());
+                }else if(Parcelable.class.isAssignableFrom(fieldType)){
+                    value = intent.getParcelableExtra(field.getAnnotation(Extras.class).key());
 				}
 
 				field.set(this, value);

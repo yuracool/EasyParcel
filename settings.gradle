@@ -1,1 +1,1 @@
-include ':test', ':easyparcel'
+include ':test', ':easyparcel', ':generator'
