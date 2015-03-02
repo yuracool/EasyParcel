@@ -79,7 +79,11 @@ public abstract class EasyParcel implements Parcelable {
 		}else if(obj instanceof double[]){
 			dest.writeDoubleArray((double[]) obj);
 		}else if(obj instanceof List){
-			dest.writeList((List) obj);
+			if(field.getGenericType() instanceof ParameterizedType){
+				dest.writeList((List) obj);
+			}else{
+				throw new IllegalArgumentException("Error occurred with field " + field.getName() + " List should be parameterized");
+			}
 		}else if(obj instanceof Byte[]){
 			writeByteArray((Byte[]) obj, dest);
 		}else if(obj instanceof Integer[]){
@@ -148,7 +152,7 @@ public abstract class EasyParcel implements Parcelable {
 		}
 		catch (NoSuchMethodException e) {
 			e.printStackTrace();
-			/*can appear when class doesn't have empty constructor*/
+			/*can appear when class doesn't have an empty constructor*/
 		}
 
 		return ret;
@@ -216,17 +220,13 @@ public abstract class EasyParcel implements Parcelable {
 			}else if(type == Character[].class){
 				value = readCharArray(in);
 			}else if(type == List.class){
-				ParameterizedType listType;
-
-				try{
-					listType = (ParameterizedType) field.getGenericType();
-				}catch (ClassCastException e){
-					//TODO: implement read and write unparameterized list
+				if(field.getGenericType() instanceof ParameterizedType){
+					ParameterizedType listType = (ParameterizedType) field.getGenericType();
+					Class<?> listClass = (Class<?>) listType.getActualTypeArguments()[0];
+					value = in.readArrayList(listClass.getClassLoader());
+				}else{
 					throw new IllegalArgumentException("Error occurred with field " + field.getName() + " List should be parameterized");
 				}
-
-				Class<?> listClass = (Class<?>) listType.getActualTypeArguments()[0];
-				value = in.readArrayList(listClass.getClassLoader());
 			}else if(EasyParcel.class.isAssignableFrom(type)){
 				try {
 					int dataPosition = in.dataPosition();

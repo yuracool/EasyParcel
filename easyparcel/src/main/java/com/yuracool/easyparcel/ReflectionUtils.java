@@ -18,6 +18,10 @@ public class ReflectionUtils {
 	public static boolean isClassStaticInner(Class inner, Class parent){
 		boolean ret = true;
 
+		if(parent == null){
+			return ret;
+		}
+
 		Field[] fields = inner.getDeclaredFields();
 		String innerPointer = parent.getName() + ".this$";
 
