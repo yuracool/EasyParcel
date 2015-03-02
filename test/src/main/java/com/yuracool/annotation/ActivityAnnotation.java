@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yuracool.data.ParcelableEntity;
+import com.yuracool.data.SerializableEntity;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -128,7 +129,7 @@ public class ActivityAnnotation extends Activity {
                     value = intent.getLongExtra(field.getAnnotation(Extras.class).key(), 0);
                 }else if (fieldType == Parcelable[].class) {
                     value = intent.getParcelableArrayExtra(field.getAnnotation(Extras.class).key());
-                }else if (fieldType == Serializable[].class) {
+                }else if (fieldType == Object[].class) {
                     value = intent.getSerializableExtra(field.getAnnotation(Extras.class).key());
                     Log.d("", "");
                 }else if (fieldType == String[].class) {

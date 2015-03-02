@@ -10,6 +10,7 @@ import com.yuracool.annotation.Extras;
 import com.yuracool.annotation.ViewId;
 import com.yuracool.annotations.R;
 import com.yuracool.data.EasyParcelEntity;
+import com.yuracool.data.JsonSerializableEntity;
 import com.yuracool.data.ParcelableEntity;
 import com.yuracool.data.SerializableEntity;
 import com.yuracool.utils.JsonSerializable;
@@ -23,14 +24,6 @@ public class ActivityExtras extends ActivityAnnotation {
 	public static final String ENTITY_EXTRA = "ENTITY_EXTRA";
     public static final String TIME_EXTRA = "TIME_EXTRA";
 
-	public static void startThisActivity(Activity activity, Parcelable entity, long time){
-		Intent intent = new Intent(activity, ActivityExtras.class);
-		intent.putExtra(ENTITY_EXTRA, entity);
-        intent.putExtra(TIME_EXTRA, time);
-
-		activity.startActivity(intent);
-	}
-
     public static void startThisActivity(Activity activity, Parcelable[] entity, long time){
         Intent intent = new Intent(activity, ActivityExtras.class);
         intent.putExtra(ENTITY_EXTRA, entity);
@@ -39,23 +32,7 @@ public class ActivityExtras extends ActivityAnnotation {
         activity.startActivity(intent);
     }
 
-    public static void startThisActivity(Activity activity, Serializable entity, long time){
-        Intent intent = new Intent(activity, ActivityExtras.class);
-        intent.putExtra(ENTITY_EXTRA, entity);
-        intent.putExtra(TIME_EXTRA, time);
-
-        activity.startActivity(intent);
-    }
-
     public static void startThisActivity(Activity activity, Serializable[] entity, long time){
-        Intent intent = new Intent(activity, ActivityExtras.class);
-        intent.putExtra(ENTITY_EXTRA, entity);
-        intent.putExtra(TIME_EXTRA, time);
-
-        activity.startActivity(intent);
-    }
-
-    public static void startThisActivity(Activity activity, String entity, long time){
         Intent intent = new Intent(activity, ActivityExtras.class);
         intent.putExtra(ENTITY_EXTRA, entity);
         intent.putExtra(TIME_EXTRA, time);
@@ -78,23 +55,14 @@ public class ActivityExtras extends ActivityAnnotation {
         activity.startActivity(intent);
     }
 
-//	@Extras(key = ENTITY_EXTRA)
-//	private String[] entities;
+//    @Extras(key = ENTITY_EXTRA)
+//    private String[] entities;
 //
-//	@Extras(key = ENTITY_EXTRA)
-//	private String entity;
-
 //    @Extras(key = ENTITY_EXTRA)
 //    private Parcelable[] entities;
 
-//    @Extras(key = ENTITY_EXTRA)
-//    private Parcelable entity;
-
     @Extras(key = ENTITY_EXTRA)
-    private SerializableEntity[] entities;
-
-//    @Extras(key = ENTITY_EXTRA)
-//    private SerializableEntity entity;
+    private Object[] entities;
 
     @Extras(key = TIME_EXTRA)
     private long time;
@@ -111,10 +79,25 @@ public class ActivityExtras extends ActivityAnnotation {
 	}
 
 	private void initView() {
-//        SerializableEntity[] entities = new SerializableEntity[this.entities.length];
+//		JsonSerializableEntity[] entities = new JsonSerializableEntity[this.entities.length];
 //        for(int i=0; i<entities.length; i++){
-//            entities[i] = (SerializableEntity) this.entities[i];
+//            entities[i] = JsonSerializable.fromJson(JsonSerializableEntity.class, this.entities[i]);
 //        }
+
+//		EasyParcelEntity[] entities = new EasyParcelEntity[this.entities.length];
+//		for (int i=0; i<entities.length; i++){
+//			entities[i] = (EasyParcelEntity) this.entities[i];
+//		}
+
+//		ParcelableEntity[] entities = new ParcelableEntity[this.entities.length];
+//		for (int i=0; i<entities.length; i++){
+//			entities[i] = (ParcelableEntity) this.entities[i];
+//		}
+
+		SerializableEntity[] entities = new SerializableEntity[this.entities.length];
+		for (int i=0; i<entities.length; i++){
+			entities[i] = (SerializableEntity) this.entities[i];
+		}
 
         if(entities != null) {
             txt.setText("Success!!!\n Time = " + String.valueOf(System.currentTimeMillis() - time));

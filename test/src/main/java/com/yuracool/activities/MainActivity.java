@@ -45,13 +45,34 @@ public class MainActivity extends ActivityAnnotation {
 			case R.id.btn:
 				txt.setGravity(Gravity.CENTER); break;
 			case R.id.btnRun:
-				SerializableEntity[] entities = new SerializableEntity[ENTITIES_COUNT];
-                for(int i=0; i<ENTITIES_COUNT; i++){
-                    entities[i] = new SerializableEntity();
-                    entities[i].init();
-                }
+				long time = System.currentTimeMillis();
 
-				ActivityExtras.startThisActivity(this, entities, System.currentTimeMillis());
+//				String[] entities = new String[ENTITIES_COUNT];
+//				for(int i=0; i<ENTITIES_COUNT; i++){
+//					JsonSerializableEntity entity = new JsonSerializableEntity();
+//					entity.init();
+//					entities[i] = entity.toJson();
+//				}
+
+//				EasyParcelEntity[] entities = new EasyParcelEntity[ENTITIES_COUNT];
+//                for(int i=0; i<ENTITIES_COUNT; i++){
+//                    entities[i] = new EasyParcelEntity();
+//                    entities[i].init();
+//                }
+
+//				ParcelableEntity[] entities = new ParcelableEntity[ENTITIES_COUNT];
+//				for(int i=0; i<ENTITIES_COUNT; i++){
+//					entities[i] = new ParcelableEntity();
+//					entities[i].init();
+//				}
+
+				SerializableEntity[] entities = new SerializableEntity[ENTITIES_COUNT];
+				for(int i=0; i<ENTITIES_COUNT; i++){
+					entities[i] = new SerializableEntity();
+					entities[i].init();
+				}
+
+				ActivityExtras.startThisActivity(this, entities, time);
                 break;
 		}
 	}
