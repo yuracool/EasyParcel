@@ -244,8 +244,10 @@ public abstract class EasyParcel implements Parcelable {
 				value = createInstanceFromParcel(in);
 			}else if(EasyParcel[].class.isAssignableFrom(type)){
 				int size = in.readInt();
+				value = Array.newInstance(type.getComponentType(), size);
+				Object[] tmp = (Object[]) value;
 				for(int i=0; i<size; i++){
-					
+					tmp[i] = createInstanceFromParcel(in);
 				}
 			}else if(Parcelable.class.isAssignableFrom(type)){
 				value = in.readParcelable(type.getClassLoader());
@@ -253,7 +255,6 @@ public abstract class EasyParcel implements Parcelable {
 				Parcelable[] tmp = in.readParcelableArray(type.getClassLoader());
 				value = Array.newInstance(type.getComponentType(), tmp.length);
 				System.arraycopy(tmp, 0, value, 0, tmp.length);
-				System.out.println();
 			}
 
 			if(value != null) {
@@ -452,5 +453,20 @@ public abstract class EasyParcel implements Parcelable {
 		}
 
 		return ret;
+	}
+
+	static enum TYPE{
+		_int, _Integer;
+
+		static TYPE getValue(String simpleClassName){
+			switch (simpleClassName){
+				case "int":
+					return _int;
+				case "Integer":
+					return _Integer;
+			}
+
+			return null;
+		}
 	}
 }
