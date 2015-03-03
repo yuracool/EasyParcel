@@ -78,12 +78,6 @@ public abstract class EasyParcel implements Parcelable {
 			dest.writeFloatArray((float[]) obj);
 		}else if(obj instanceof double[]){
 			dest.writeDoubleArray((double[]) obj);
-		}else if(obj instanceof List){
-			if(field.getGenericType() instanceof ParameterizedType){
-				dest.writeList((List) obj);
-			}else{
-				throw new IllegalArgumentException("Error occurred with field " + field.getName() + " List should be parameterized");
-			}
 		}else if(obj instanceof Byte[]){
 			writeByteArray((Byte[]) obj, dest);
 		}else if(obj instanceof Integer[]){
@@ -100,12 +94,31 @@ public abstract class EasyParcel implements Parcelable {
 			writeDoubleArray((Double[]) obj, dest);
 		}else if(obj instanceof Character[]){
 			writeCharArray((Character[]) obj, dest);
+		}else if(obj instanceof List){
+			if(field.getGenericType() instanceof ParameterizedType){
+				dest.writeList((List) obj);
+			}else{
+				throw new IllegalArgumentException("Error occurred with field " + field.getName() + " List should be parameterized");
+			}
 		}else if(obj instanceof EasyParcel){
 			if(ReflectionUtils.isClassStaticInner(obj.getClass(), instance.getClass())) {
 				writeInstanceToParcel(obj, dest, flags);
 			}else{
 				throw new UnsupportedOperationException("Only nested static classes are supported");
 			}
+		}else if(obj instanceof EasyParcel[]){
+			if(ReflectionUtils.isClassStaticInner(obj.getClass().getComponentType(), instance.getClass())) {
+				dest.writeInt(((EasyParcel[]) obj).length);
+				for(EasyParcel easyParcel : (EasyParcel[])obj) {
+					writeInstanceToParcel(easyParcel, dest, flags);
+				}
+			}else{
+				throw new UnsupportedOperationException("Only nested static classes are supported");
+			}
+		}else if(obj instanceof Parcelable){
+			dest.writeParcelable((Parcelable)obj, flags);
+		}else if(obj instanceof Parcelable[]){
+			dest.writeParcelableArray((Parcelable[])obj, flags);
 		}
 	}
 
@@ -228,16 +241,19 @@ public abstract class EasyParcel implements Parcelable {
 					throw new IllegalArgumentException("Error occurred with field " + field.getName() + " List should be parameterized");
 				}
 			}else if(EasyParcel.class.isAssignableFrom(type)){
-				try {
-					int dataPosition = in.dataPosition();
-					String className = in.readString();
-					Class clazz = Class.forName(className);
-
-					if(ReflectionUtils.isClassStaticInner(clazz, instance.getClass())){
-						in.setDataPosition(dataPosition);
-						value = createInstanceFromParcel(in);
-					}
-				}catch (ClassNotFoundException e) {/*ignore*/}
+				value = createInstanceFromParcel(in);
+			}else if(EasyParcel[].class.isAssignableFrom(type)){
+				int size = in.readInt();
+				for(int i=0; i<size; i++){
+					
+				}
+			}else if(Parcelable.class.isAssignableFrom(type)){
+				value = in.readParcelable(type.getClassLoader());
+			}else if(Parcelable[].class.isAssignableFrom(type)){
+				Parcelable[] tmp = in.readParcelableArray(type.getClassLoader());
+				value = Array.newInstance(type.getComponentType(), tmp.length);
+				System.arraycopy(tmp, 0, value, 0, tmp.length);
+				System.out.println();
 			}
 
 			if(value != null) {

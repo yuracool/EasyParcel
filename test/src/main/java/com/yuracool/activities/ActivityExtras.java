@@ -57,12 +57,12 @@ public class ActivityExtras extends ActivityAnnotation {
 
 //    @Extras(key = ENTITY_EXTRA)
 //    private String[] entities;
-//
+
 //    @Extras(key = ENTITY_EXTRA)
 //    private Parcelable[] entities;
 
-    @Extras(key = ENTITY_EXTRA)
-    private Object[] entities;
+//    @Extras(key = ENTITY_EXTRA)
+//    private Object[] entities;
 
     @Extras(key = TIME_EXTRA)
     private long time;
@@ -94,15 +94,17 @@ public class ActivityExtras extends ActivityAnnotation {
 //			entities[i] = (ParcelableEntity) this.entities[i];
 //		}
 
-		SerializableEntity[] entities = new SerializableEntity[this.entities.length];
-		for (int i=0; i<entities.length; i++){
-			entities[i] = (SerializableEntity) this.entities[i];
-		}
+//		SerializableEntity[] entities = new SerializableEntity[this.entities.length];
+//		for (int i=0; i<entities.length; i++){
+//			entities[i] = (SerializableEntity) this.entities[i];
+//		}
 
-        if(entities != null) {
-            txt.setText("Success!!!\n Time = " + String.valueOf(System.currentTimeMillis() - time));
-        }else{
-            txt.setText("Error!!!\n Time = " + String.valueOf(System.currentTimeMillis() - time));
-        }
+//      if(entities != null) {
+//			txt.setText("Success!!!\n Time = " + String.valueOf(System.currentTimeMillis() - time));
+//		}else{
+//			txt.setText("Error!!!\n Time = " + String.valueOf(System.currentTimeMillis() - time));
+//		}
+
+        txt.setText("Success!!!\n Time = " + String.valueOf(System.currentTimeMillis() - time));
 	}
 }

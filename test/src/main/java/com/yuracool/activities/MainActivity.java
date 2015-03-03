@@ -9,10 +9,7 @@ import com.yuracool.annotation.ActivityAnnotation;
 import com.yuracool.annotation.OnClick;
 import com.yuracool.annotation.ViewId;
 import com.yuracool.annotations.R;
-import com.yuracool.data.EasyParcelEntity;
-import com.yuracool.data.JsonSerializableEntity;
-import com.yuracool.data.ParcelableEntity;
-import com.yuracool.data.SerializableEntity;
+import com.yuracool.data.*;
 import com.yuracool.utils.JsonSerializable;
 
 /**
@@ -24,9 +21,14 @@ public class MainActivity extends ActivityAnnotation {
 	@OnClick
 	@ViewId(id = R.id.btn)
 	private Button btn;
+
 	@OnClick
 	@ViewId(id = R.id.btnRun)
 	private Button btnRun;
+
+	@OnClick
+	@ViewId(id = R.id.btnRunTest)
+	private Button btnRunTest;
 
 	@ViewId(id = R.id.txt)
 	private TextView txt;
@@ -44,6 +46,11 @@ public class MainActivity extends ActivityAnnotation {
 		switch (id){
 			case R.id.btn:
 				txt.setGravity(Gravity.CENTER); break;
+			case R.id.btnRunTest:
+				EasyParcelTest parcel = new EasyParcelTest();
+				parcel.init();
+				ActivityTest.startThisActivity(this, parcel);
+				break;
 			case R.id.btnRun:
 				long time = System.currentTimeMillis();
 
@@ -66,13 +73,15 @@ public class MainActivity extends ActivityAnnotation {
 //					entities[i].init();
 //				}
 
-				SerializableEntity[] entities = new SerializableEntity[ENTITIES_COUNT];
-				for(int i=0; i<ENTITIES_COUNT; i++){
-					entities[i] = new SerializableEntity();
-					entities[i].init();
-				}
+//				SerializableEntity[] entities = new SerializableEntity[ENTITIES_COUNT];
+//				for(int i=0; i<ENTITIES_COUNT; i++){
+//					entities[i] = new SerializableEntity();
+//					entities[i].init();
+//				}
 
-				ActivityExtras.startThisActivity(this, entities, time);
+//				ActivityExtras.startThisActivity(this, entities, time);
+
+				ActivityExtras.startThisActivity(this, time);
                 break;
 		}
 	}

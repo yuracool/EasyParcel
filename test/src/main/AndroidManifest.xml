@@ -19,6 +19,8 @@
 
         <activity android:name="com.yuracool.activities.ActivityExtras"/>
 
+        <activity android:name="com.yuracool.activities.ActivityTest"/>
+
     </application>
 
 </manifest>
