@@ -1,27 +1,29 @@
 package com.yuracool.data;
 
+import android.os.Parcelable;
 import com.yuracool.easyparcel.EasyParcel;
 
 /**
  * Created by Kuhta on 03.03.2015.
  */
 public class EasyParcelTest extends EasyParcel {
-	Test[] test;
+	Test test;
 
 	public void init(){
-		test = new Test[2];
-
-		test[0] = new Test();
-		test[0].str = "Parcel";
-		test[0].i = -256;
-
-		test[1] = new Test();
-		test[1].str = "Parcel2";
-		test[1].i = -255;
+		test = new Test();
+		test.str = "Parcel";
+		test.i = -256;
+		test.test2 = test.new Test2();
+		test.test2.val = 100L;
 	}
 
 	private static class Test extends EasyParcel{
 		String str;
 		int i;
+		Test2 test2;
+
+		private class Test2 extends EasyParcel{
+			long val;
+		}
 	}
 }

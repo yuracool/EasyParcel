@@ -100,24 +100,32 @@ public abstract class EasyParcel implements Parcelable {
 			}else{
 				throw new IllegalArgumentException("Error occurred with field " + field.getName() + " List should be parameterized");
 			}
-		}else if(obj instanceof EasyParcel){
-			if(ReflectionUtils.isClassStaticInner(obj.getClass(), instance.getClass())) {
-				writeInstanceToParcel(obj, dest, flags);
-			}else{
-				throw new UnsupportedOperationException("Only nested static classes are supported");
-			}
-		}else if(obj instanceof EasyParcel[]){
-			if(ReflectionUtils.isClassStaticInner(obj.getClass().getComponentType(), instance.getClass())) {
-				dest.writeInt(((EasyParcel[]) obj).length);
-				for(EasyParcel easyParcel : (EasyParcel[])obj) {
-					writeInstanceToParcel(easyParcel, dest, flags);
-				}
-			}else{
-				throw new UnsupportedOperationException("Only nested static classes are supported");
-			}
+//		}else if(obj instanceof EasyParcel){
+//			if(ReflectionUtils.isClassStaticInner(obj.getClass(), instance.getClass())) {
+//				writeInstanceToParcel(obj, dest, flags);
+//			}else{
+//				throw new UnsupportedOperationException("Only nested static classes are supported");
+//			}
+//		}else if(obj instanceof EasyParcel[]){
+//			if(ReflectionUtils.isClassStaticInner(obj.getClass().getComponentType(), instance.getClass())) {
+//				dest.writeInt(((EasyParcel[]) obj).length);
+//				for(EasyParcel easyParcel : (EasyParcel[])obj) {
+//					writeInstanceToParcel(easyParcel, dest, flags);
+//				}
+//			}else{
+//				throw new UnsupportedOperationException("Only nested static classes are supported");
+//			}
 		}else if(obj instanceof Parcelable){
-			dest.writeParcelable((Parcelable)obj, flags);
+			if(obj instanceof EasyParcel)
+				if(!ReflectionUtils.isClassStaticInner(obj.getClass(), instance.getClass()))
+					throw new UnsupportedOperationException("Only nested static classes are supported");
+
+			dest.writeParcelable((Parcelable) obj, flags);
 		}else if(obj instanceof Parcelable[]){
+			if(obj instanceof EasyParcel[])
+				if(!ReflectionUtils.isClassStaticInner(obj.getClass().getComponentType(), instance.getClass()))
+					throw new UnsupportedOperationException("Only nested static classes are supported");
+
 			dest.writeParcelableArray((Parcelable[])obj, flags);
 		}
 	}
@@ -240,15 +248,15 @@ public abstract class EasyParcel implements Parcelable {
 				}else{
 					throw new IllegalArgumentException("Error occurred with field " + field.getName() + " List should be parameterized");
 				}
-			}else if(EasyParcel.class.isAssignableFrom(type)){
-				value = createInstanceFromParcel(in);
-			}else if(EasyParcel[].class.isAssignableFrom(type)){
-				int size = in.readInt();
-				value = Array.newInstance(type.getComponentType(), size);
-				Object[] tmp = (Object[]) value;
-				for(int i=0; i<size; i++){
-					tmp[i] = createInstanceFromParcel(in);
-				}
+//			}else if(EasyParcel.class.isAssignableFrom(type)){
+//				value = createInstanceFromParcel(in);
+//			}else if(EasyParcel[].class.isAssignableFrom(type)){
+//				int size = in.readInt();
+//				value = Array.newInstance(type.getComponentType(), size);
+//				Object[] tmp = (Object[]) value;
+//				for(int i=0; i<size; i++){
+//					tmp[i] = createInstanceFromParcel(in);
+//				}
 			}else if(Parcelable.class.isAssignableFrom(type)){
 				value = in.readParcelable(type.getClassLoader());
 			}else if(Parcelable[].class.isAssignableFrom(type)){
