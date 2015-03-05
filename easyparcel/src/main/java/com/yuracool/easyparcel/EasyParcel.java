@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Kuhta on 04.02.2015.
@@ -18,6 +19,10 @@ public abstract class EasyParcel implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		if(!ReflectionUtils.isClassStaticInner(EasyParcel.class)){
+			throw new UnsupportedOperationException("Only nested static classes are supported");
+		}
+
 		long time = System.currentTimeMillis();
 		writeInstanceToParcel(this, dest, flags);
 		System.out.println("writeToParcel time = " + String.valueOf(System.currentTimeMillis() - time));
@@ -100,30 +105,21 @@ public abstract class EasyParcel implements Parcelable {
 			}else{
 				throw new IllegalArgumentException("Error occurred with field " + field.getName() + " List should be parameterized");
 			}
-//		}else if(obj instanceof EasyParcel){
-//			if(ReflectionUtils.isClassStaticInner(obj.getClass(), instance.getClass())) {
-//				writeInstanceToParcel(obj, dest, flags);
-//			}else{
-//				throw new UnsupportedOperationException("Only nested static classes are supported");
-//			}
-//		}else if(obj instanceof EasyParcel[]){
-//			if(ReflectionUtils.isClassStaticInner(obj.getClass().getComponentType(), instance.getClass())) {
-//				dest.writeInt(((EasyParcel[]) obj).length);
-//				for(EasyParcel easyParcel : (EasyParcel[])obj) {
-//					writeInstanceToParcel(easyParcel, dest, flags);
-//				}
-//			}else{
-//				throw new UnsupportedOperationException("Only nested static classes are supported");
-//			}
+		}else if(obj instanceof Map){
+			if(field.getGenericType() instanceof ParameterizedType){
+				dest.writeMap((Map) obj);
+			}else{
+				throw new IllegalArgumentException("Error occurred with field " + field.getName() + " Map should be parameterized");
+			}
 		}else if(obj instanceof Parcelable){
 			if(obj instanceof EasyParcel)
-				if(!ReflectionUtils.isClassStaticInner(obj.getClass(), instance.getClass()))
+				if(!ReflectionUtils.isClassStaticInner(obj.getClass()))
 					throw new UnsupportedOperationException("Only nested static classes are supported");
 
 			dest.writeParcelable((Parcelable) obj, flags);
 		}else if(obj instanceof Parcelable[]){
 			if(obj instanceof EasyParcel[])
-				if(!ReflectionUtils.isClassStaticInner(obj.getClass().getComponentType(), instance.getClass()))
+				if(!ReflectionUtils.isClassStaticInner(obj.getClass().getComponentType()))
 					throw new UnsupportedOperationException("Only nested static classes are supported");
 
 			dest.writeParcelableArray((Parcelable[])obj, flags);
@@ -241,22 +237,13 @@ public abstract class EasyParcel implements Parcelable {
 			}else if(type == Character[].class){
 				value = readCharArray(in);
 			}else if(type == List.class){
-				if(field.getGenericType() instanceof ParameterizedType){
-					ParameterizedType listType = (ParameterizedType) field.getGenericType();
-					Class<?> listClass = (Class<?>) listType.getActualTypeArguments()[0];
-					value = in.readArrayList(listClass.getClassLoader());
-				}else{
-					throw new IllegalArgumentException("Error occurred with field " + field.getName() + " List should be parameterized");
-				}
-//			}else if(EasyParcel.class.isAssignableFrom(type)){
-//				value = createInstanceFromParcel(in);
-//			}else if(EasyParcel[].class.isAssignableFrom(type)){
-//				int size = in.readInt();
-//				value = Array.newInstance(type.getComponentType(), size);
-//				Object[] tmp = (Object[]) value;
-//				for(int i=0; i<size; i++){
-//					tmp[i] = createInstanceFromParcel(in);
-//				}
+				ParameterizedType listType = (ParameterizedType) field.getGenericType();
+				Class<?> listClass = (Class<?>) listType.getActualTypeArguments()[0];
+				value = in.readArrayList(listClass.getClassLoader());
+			}else if(type == Map.class){
+				ParameterizedType mapType = (ParameterizedType) field.getGenericType();
+				Class<?> mapClass = (Class<?>) mapType.getActualTypeArguments()[1];
+				value = in.readHashMap(mapClass.getClassLoader());
 			}else if(Parcelable.class.isAssignableFrom(type)){
 				value = in.readParcelable(type.getClassLoader());
 			}else if(Parcelable[].class.isAssignableFrom(type)){

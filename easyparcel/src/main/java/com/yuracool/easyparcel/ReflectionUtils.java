@@ -15,25 +15,15 @@ import java.util.List;
 public class ReflectionUtils {
 	private ReflectionUtils(){}
 
-	public static boolean isClassStaticInner(Class inner, Class parent){
-		boolean ret = true;
+	public static boolean isClassStaticInner(Class clazz){
+		if(!clazz.isMemberClass())
+			return true;
 
-		if(parent == null){
-			return ret;
-		}
+		int modifiers = clazz.getModifiers();
+		if(Modifier.isStatic(modifiers))
+			return true;
 
-		Field[] fields = inner.getDeclaredFields();
-		String innerPointer = parent.getName() + ".this$";
-
-		for(Field field : fields){
-			String fieldName = field.getType().getName() + "." + field.getName();
-			if(fieldName.contains(innerPointer)){
-				ret = false;
-				break;
-			}
-		}
-
-		return ret;
+		return false;
 	}
 
 	public static Object instantiateObject(Class clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
